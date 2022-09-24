@@ -186,8 +186,6 @@ contract RepuSwapPair is RepuSwapERC20, ReentrancyGuard {
         uint256 balance1 = IERC20(_token1).balanceOf(address(this));
         uint256 liquidity = balanceOf(address(this));
 
-        uint256 pastLiquidity = balanceOf(address(to));
-
         bool feeOn = _mintFee(_reserve0, _reserve1);
         uint256 _totalSupply = totalSupply(); // gas savings, must be defined here since totalSupply can update in _mintFee
         amount0 = (liquidity * balance0) / _totalSupply; // using balances ensures pro-rata distribution
@@ -202,20 +200,9 @@ contract RepuSwapPair is RepuSwapERC20, ReentrancyGuard {
         balance0 = IERC20(_token0).balanceOf(address(this));
         balance1 = IERC20(_token1).balanceOf(address(this));
 
-        uint256 nowLiquidity = balanceOf(address(to));
-
         _update(balance0, balance1, _reserve0, _reserve1);
         if (feeOn) kLast = uint256(reserve0) * uint256(reserve1); // reserve0 and reserve1 are up-to-date
         emit Burn(msg.sender, amount0, amount1, to);
-    }
-
-    function _transferUserInfo(
-        address from,
-        address to,
-        uint256 value
-    ) internal {
-        uint256 pastLiquidity = balanceOf(address(from));
-        uint256 nowLiquidity = pastLiquidity - value;
     }
 
     function transfer(address to, uint256 value)
@@ -223,8 +210,6 @@ contract RepuSwapPair is RepuSwapERC20, ReentrancyGuard {
         override
         returns (bool res)
     {
-        address from = msg.sender;
-        _transferUserInfo(from, to, value);
         res = super.transfer(to, value);
     }
 
@@ -233,7 +218,6 @@ contract RepuSwapPair is RepuSwapERC20, ReentrancyGuard {
         address to,
         uint256 value
     ) public override returns (bool res) {
-        _transferUserInfo(from, to, value);
         res = super.transferFrom(from, to, value);
     }
 
