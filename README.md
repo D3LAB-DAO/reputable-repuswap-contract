@@ -1,13 +1,19 @@
-# Sample Hardhat Project
+# REPU Swap
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+Swap rTokens and REPU through Repuswap.
 
-Try running some of the following tasks:
+## Core
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.js
-```
+- RepuSwapFactory.sol
+- RepuSwapPair.sol
+
+## Periphery
+
+- RepuSwapRouter.sol
+- (WIP) RepuSwapZapIn.sol
+- (WIP) RepuSwapZapOut.sol
+
+<!--
+TODO
+- Automatically register rTokens
+-->
